@@ -10,26 +10,50 @@ class App < Sinatra::Base
 
   url_cardano_transactions = "https://input-output-hk.github.io/cardano-transactions/coverage/"
 
-  def get_coverage(url)
+  def get_xpath(which)
+    case which
+    when 'top-level-definitions'
+      i = "1"
+    when 'alternatives'
+      i = "4"
+    when 'expressions'
+      i = "7"
+    else
+      i = "1"
+    end
+    "//th[contains(text(),'Program Coverage Total')]/../td[#{i}]"
+  end
+
+  def get_coverage(url, which)
     html = URI.open(url).read
     doc = Nokogiri::HTML(html)
+    xpath = get_xpath(which)
 
-    xpath_top_level_definitions = "//th[contains(text(),'Program Coverage Total')]/../td[1]"
-    xpath_alternatives = "//th[contains(text(),'Program Coverage Total')]/../td[4]"
-    xpath_expressions = "//th[contains(text(),'Program Coverage Total')]/../td[7]"
+    cov_html = doc.xpath(xpath).to_s
+    cov = /[0-9]{1,3}/.match(cov_html)
+    cov
+  end
 
-    cov_top_level_html = doc.xpath(xpath_top_level_definitions).to_s
-    cov_alternatives_html = doc.xpath(xpath_alternatives).to_s
-    cov_expressions_html = doc.xpath(xpath_expressions).to_s
-
-    cov_top_level = /[0-9]{1,3}%/.match(cov_top_level_html)
-    cov_alternatives = /[0-9]{1,3}%/.match(cov_alternatives_html)
-    cov_expressions = /[0-9]{1,3}%/.match(cov_expressions_html)
-
+  def prepare_response(cov)
+    case cov.to_s.to_i
+    when 0..30
+      color = "red"
+    when 30..50
+      color = "orange"
+    when 50..70
+      color = "yellow"
+    when 70..80
+      color = "yellowgreen"
+    when 80..90
+      color = "green"
+    when 90..100
+      color = "brightgreen"
+    end
     {
-      top_level_definitions: cov_top_level,
-      alternatives: cov_alternatives,
-      expressions: cov_expressions
+      schemaVersion: 1,
+      label: "Coverage",
+      message: "#{cov}%",
+      color: color
     }.to_json
   end
 
@@ -38,7 +62,11 @@ class App < Sinatra::Base
   end
 
   get "/cardano-transactions" do
-    get_coverage url_cardano_transactions
+    redirect "/cardano-transactions/top-level-definitions"
+  end
+  get "/cardano-transactions/:which" do
+    cov = get_coverage url_cardano_transactions, params[:which]
+    prepare_response(cov)
   end
 
 end
