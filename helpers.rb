@@ -59,9 +59,9 @@ module Helpers
 
 end
 
-include Helpers
-require 'open-uri'
-require 'nokogiri'
-html = URI.open("https://input-output-hk.github.io/cardano-transactions/coverage/hpc_index.html").read
-cov = get_coverage html, 'avg'
-p cov
+# include Helpers
+# require 'open-uri'
+# require 'nokogiri'
+# html = URI.open("https://input-output-hk.github.io/cardano-transactions/coverage/hpc_index.html").read
+# cov = get_coverage html, 'avg'
+# p cov
