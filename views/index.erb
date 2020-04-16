@@ -17,6 +17,7 @@
         Each enpoint can go with:
       </p>
       <ul>
+        <li>/enpoint/avg</li>
         <li>/enpoint/top-level-definitions</li>
         <li>/enpoint/alternatives</li>
         <li>/enpoint/expressions</li>
@@ -24,11 +25,32 @@
 
       <h4>Enpoints:</h4>
 
-      <ul>
-        <li><a href="/cardano-transactions">/cardano-transactions</a></li>
-        <li><a href="/cardano-coin-selection">/cardano-coin-selection</a></li>
-      </ul>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Endpoint</th>
+            <th scope="col">Badge</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="/cardano-transactions">/cardano-transactions</a></td>
+            <td><img src="https://img.shields.io/endpoint?url=https://adrestia-coverage.herokuapp.com/cardano-transactions&style=for-the-badge" /></td>
+          </tr>
+          <tr>
+            <td><a href="/cardano-coin-selection">/cardano-coin-selection</a></td>
+            <td><img src="https://img.shields.io/endpoint?url=https://adrestia-coverage.herokuapp.com/cardano-coin-selection&style=for-the-badge" /></td>
+          </tr>
 
+        </tbody>
+      </table>
+
+      <footer class="footer mt-auto py-3">
+        <div class="container">
+          <span class="text-muted">
+            <a href="https://github.com/piotr-iohk/adrestia-coverage">github</a>
+        </div>
+      </footer>
     </div>
 
   </body>
